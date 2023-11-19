@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+
+    <div>
+        <label for="fname">First Name:</label>
+        <input type="text" id="fname" required>
+        <br>
+
+        <label for="lname">Last Name:</label>
+        <input type="text" id="lname" required>
+        <br>
+
+        <label for="uid">UserID:</label>
+        <input type="text" id="uid" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,12}$">
+        <br>
+
+        <label for="birthday">Birthdate:</label>
+        <input type="date" id="birthday" required>
+        <br>
+
+        <button onclick="processData()">Accept</button>
+    </div>
+
+    <div id="display"></div>
+
+    <script>
+        function dateDiff(birthdate) {
+            const currentDate = new Date();
+            const birthDate = new Date(birthdate);
+            const timeDiff = currentDate - birthDate;
+            const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+            return days;
+        }
+
+        function validateUserID(uid) {
+            const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,12}$/;
+            return regex.test(uid);
+        }
+
+        function processData() {
+            const fname = document.getElementById('fname').value;
+            const lname = document.getElementById('lname').value;
+            const uid = document.getElementById('uid').value;
+            const birthday = document.getElementById('birthday').value;
+
+            if (!validateUserID(uid)) {
+                document.getElementById('display').innerHTML = "Invalid UserID";
+                return;
+            }
+
+            if (!fname || !lname || !birthday) {
+                document.getElementById('display').innerHTML = "Invalid fname, lname, or birthday";
+                return;
+            }
+
+            const daysSinceBirth = dateDiff(birthday);
+            const output = `${fname} ${lname} you have been breathing for ${daysSinceBirth} days!`;
+
+            if (daysSinceBirth < (365 * 18)) {
+                document.getElementById('display').innerHTML = output + " You are probably not old enough to take this class!";
+            } else {
+                document.getElementById('display').innerHTML = output;
+            }
+
+            let str = "";
+            for (let i = 1; i <= 20; i++) {
+                
+                str +="<br>"+"X".repeat(i);
+            }
+
+            document.getElementById('display').innerHTML += str;
+        }
+    </script>
+
+</body>
+
+</html>
